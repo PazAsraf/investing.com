@@ -1,3 +1,5 @@
-npm install react-scripts --save
+npm install react-scripts
 
-run 'npm start'
+npm install
+
+npm start
