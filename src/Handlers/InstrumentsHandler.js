@@ -2,9 +2,8 @@ const config = require('../config/config');
 
 const instrumentsApi = require('../Api/InstrumentsApi');
 
-const filterInstrument = async (searchText, maxResults) => {
-    var allInstruments= await gelAllInstruments();
-  return allInstruments
+const filterInstrument = (searchText, dataToSearch, maxResults) => {
+  return dataToSearch
       .filter(insrument => {
         if (insrument.name.toLowerCase().includes(searchText.toLowerCase())) {
           return true;

@@ -18,18 +18,17 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       filteredInstruments: [],
+      allInstruments: [],
       isCollapseVisible: false
     };
     this.getInstruments();
   }
 
   handleSearchChange = event => {
-    var filterInstrumentPromise = instrumentHandler.filterInstrument(event.target.value, 20);
-
-    filterInstrumentPromise.then((res) => {          
-      this.setState({
-        filteredInstruments: res
-      });
+    var filterInstrument = instrumentHandler.filterInstrument(event.target.value, this.state.allInstruments, 20);
+        
+    this.setState({
+      filteredInstruments: filterInstrument
     });
   };
 
@@ -38,7 +37,8 @@ export default class App extends React.Component {
         
     instrumentsPromise.then((res) => {
         this.setState({
-        filteredInstruments: res
+        filteredInstruments: res,
+        allInstruments: res
       });
     });
   };
@@ -48,6 +48,8 @@ export default class App extends React.Component {
 
     deleteInstrumentPromise.then(() => {          
       this.getInstruments();
+    }).catch(()=> {
+      alert("Cannot Delete Instrument !");
     });
   };
 
@@ -62,6 +64,8 @@ export default class App extends React.Component {
   
       createInstrumentPromise.then(() => {          
         this.getInstruments();
+      }).catch(() => {
+        alert("Cannot Add Instrument !");
       });
 
       this.changeCollapseState();

@@ -1,12 +1,10 @@
-const c = require('config');
-
-
 const instrumentsRouter = async (app, db) => {    
     /// GET
     app.get("/instruments", (req, res) => {    
-        var data = db.getAll();
-        
-        res.status(200).send(data);
+        db.getAll().then(function(data) {     
+            res.status(200).send(data);
+        });
+
     });
 
     // POST
@@ -14,21 +12,26 @@ const instrumentsRouter = async (app, db) => {
 
         var newInstrument = req.body;
 
-        var newEntity = db.create(newInstrument);
+        db.create(newInstrument).then(function(created){
+            if (created) {
+                res.status(200).send(created);
+            } else {
+                res.status(500).send();
+            }
+        });
 
-        if (newEntity) {
-            res.status(200).send(newEntity);
-        }
       });
 
     app.delete("/instruments/:id", (req, res) => {
         const instrumentId = req.params["id"];
 
-        var deleted = db.delete(instrumentId);
-
-        if (deleted) {
-            res.status(200).send();
-        }
+        db.delete(instrumentId).then(function(deleted){
+            if (deleted) {
+                res.status(200).send();
+            } else {
+                res.status(500).send();
+            }
+        });
     });
       
 };
